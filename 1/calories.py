@@ -13,17 +13,17 @@ thisCal = 0
 for e in intList:
 
     if e == '#':
-        print('new elf')
-        print(thisCal)
-        print(maxCal)
-        print('---')
+        #print('new elf')
+        #print(thisCal)
+        #print(maxCal)
+        #print('---')
         if thisCal > maxCal:
             maxCal = thisCal
         thisCal = 0
     else:
         #print(e)
         thisCal += e
-        print(e)
-        print(thisCal)
+        #print(e)
+        #print(thisCal)
 
 print(maxCal)
