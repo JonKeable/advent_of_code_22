@@ -18,7 +18,7 @@ my $txt = $linelist[0];
 
 for my $i ( 0 .. length($txt) - 1 ) {
     my $sub = substr( $txt, $i, $k );
-    ## print "Index: $i, Text: $four \n";
+    ## regex checks for matching char using back referencing of group
     if ( !( $sub =~ /(.).*?\1/ ) ) {
         print "'$sub' repeated @ '$i'\n";
         last;
