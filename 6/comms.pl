@@ -1,13 +1,16 @@
 use warnings;
 use strict;
 
-my $filename = 'input.txt';
+# my $filename = 'input.txt';
+# my $k        = 4;
+
+my ($filename, $k) = @ARGV;
 
 ## < for read
 open FH, '<', $filename or die $!;
 
 my @linelist = ();
-my $k        = 4;
+
 
 while (<FH>) {
     push @linelist, $_;
