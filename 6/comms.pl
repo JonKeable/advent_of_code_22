@@ -23,7 +23,8 @@ for my $i ( 0 .. length($txt) - 1 ) {
     my $sub = substr( $txt, $i, $k );
     ## regex checks for matching char using back referencing of group
     if ( !( $sub =~ /(.).*?\1/ ) ) {
-        print "'$sub' repeated @ '$i'\n";
+         my $loc = $i + $k;
+        print "'$sub' repeated @ '$loc'\n";
         last;
     }
 }
