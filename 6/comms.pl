@@ -23,7 +23,7 @@ for my $i ( 0 .. length($txt) - 1 ) {
     ## regex checks for matching char using back referencing of group
     if ( !( $sub =~ /(.).*?\1/ ) ) {
         my $loc = $i + $k;
-        print "'$sub' repeated @ '$loc'\n";
+        print "'$sub' found @ '$loc'\n";
         last;
     }
 }
