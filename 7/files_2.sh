@@ -10,10 +10,8 @@ BEGIN {
 {
     if ($1 == "$") {
         if ($2 == "cd") {
-            print "change directory"
             ## i don't know why, but using == ".." didnt work! (or == anyting else, like "ee")
             if ($3 ~ /\.\./) {
-                print "go up"
                 delete dirDepths[depth]
                 depth--
                 currDir = dirDepths[depth]
@@ -54,9 +52,25 @@ END {
 
 
     print "----------------"
-    #
-    uesdSpace = file['/']
-    for (dir in files) {
+    
 
+
+    usedSpace = files["/"]
+    print usedSpace
+    remSpace = TOTAL_SPACE - usedSpace
+    print ("current space: " TOTAL_SPACE " - " usedSpace " = " remSpace)
+    spaceNeed = SPACE_REQ - remSpace
+    print ("space needed: " SPACE_REQ " - " remSpace " = " spaceNeed)
+
+    smallest = TOTAL_SPACE
+
+    for (dir in files) {
+        if (files[dir] >= spaceNeed && files[dir] < smallest) {
+            smallest = files[dir]
+            print files[dir]
+        }
     }
+
+    print ("smallest: " smallest)
+
 }
