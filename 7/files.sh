@@ -25,7 +25,6 @@ BEGIN {
                 else {
                     currDir = (currDir "/" $3)
                 }
-                print currDir
                 dirDepths[depth] = currDir
                 depth++
                 files[currDir]+=0
