@@ -20,7 +20,12 @@ BEGIN {
             }
             else {
                 # need this as some subdirs in different parent dirs have the same name, this was the source of issues
-                currDir = (currDir "/" $3)
+                if (currDir == "") {
+                    currDir = $3
+                }
+                else {
+                    currDir = (currDir "/" $3)
+                }
                 dirDepths[depth] = currDir
                 depth++
                 files[currDir]+=0
@@ -49,11 +54,9 @@ END {
 
 
     print "----------------"
-    sum = 0
+    #
+    uesdSpace = file['/']
     for (dir in files) {
 
     }
-
-    print ("sum : " sum)
-    print "end"
 }

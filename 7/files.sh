@@ -8,7 +8,6 @@ BEGIN {
 
 {
     if ($1 == "$") {
-        #print "control input";
         if ($2 == "cd") {
             print "change directory"
             ## i don't know why, but using == ".." didnt work! (or == anyting else, like "ee")
@@ -19,10 +18,14 @@ BEGIN {
                 currDir = dirDepths[depth]
             }
             else {
-                #print $3
                 # need this as some subdirs in different parent dirs have the same name, this was the source of issues
-                currDir = (currDir "/" $3)
-                #print currDir
+                if (currDir == "") {
+                    currDir = $3
+                }
+                else {
+                    currDir = (currDir "/" $3)
+                }
+                print currDir
                 dirDepths[depth] = currDir
                 depth++
                 files[currDir]+=0
@@ -31,22 +34,12 @@ BEGIN {
     }
 
     else if ($1 == "dir") {
-        #print "directory";
-
     }
 
     #files
     else {
-        #print "file"
-        #print $1
-        #print "-----#-----"
         for (d in dirDepths) {
-            #print "....."
-            #print d
-            #print dirDepths[d]
-            #print files[dirDepths[d]]
             files[dirDepths[d]] += $1
-            #print files[dirDepths[d]]
         }
     }
 }
@@ -69,13 +62,9 @@ END {
         else {
             print "too big"
         }
-        #print dir
-        #print files[dir]
-        #print ""
+
     }
 
     print ("sum : " sum)
     print "end"
-
-    print files["dtmbp"]
 }
