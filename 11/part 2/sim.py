@@ -2,9 +2,9 @@ from monkey import Monkey
 import numpy as np
 
 
-def takeTurn(monkey, list):
+def takeTurn(monkey, list, mod):
     while (monkey.currentItems):
-        result = monkey.inspect()
+        result = monkey.inspect(mod)
         list[result[0]].addItem(result[1])
 
 
@@ -31,11 +31,21 @@ def printMonkeys(list):
     for monkey in list:
         print(monkey)
 
+modulo = 1
+divSet = set()
+for monkey in monkeyList:
+    divSet.add(monkey.testX)
 
-numberOfRounds = 20
+for d in divSet:
+    modulo *= d
+
+print(modulo)
+
+numberOfRounds = 10000
 for round in range(1, numberOfRounds+1):
     for monkey in monkeyList:
-        takeTurn(monkey, monkeyList)
+        takeTurn(monkey, monkeyList, modulo)
+
 
 printMonkeys(monkeyList)
 

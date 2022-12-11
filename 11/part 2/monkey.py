@@ -28,7 +28,7 @@ class Monkey:
     def addItem(self, item):
         self.currentItems.append(item)
 
-    def inspect(self) :
+    def inspect(self, mod) :
         self.inspections += 1
         item = self.popItem()
         opX = item if self.opX == 'old' else int(self.opX)
@@ -37,11 +37,12 @@ class Monkey:
             worryLevel = item * opX
         elif self.operand == '+':
             worryLevel = item + opX
-        worryLevel  = worryLevel // 3
+        ## ARRGH !!!
+        ## worryLevel  = worryLevel // 3
         if worryLevel % self.testX == 0:
-            return (self.trueMonkey, worryLevel)
+            return (self.trueMonkey, worryLevel % mod)
         else:
-            return (self.falseMonkey, worryLevel)
+            return (self.falseMonkey, worryLevel % mod)
     
 
     
