@@ -42,7 +42,7 @@ def compare(pair):
 
 
 
-f = open('test.txt', 'r')
+f = open('input.txt', 'r')
 lineList = f.read().splitlines()
 lineList.append('')
 
@@ -62,3 +62,11 @@ for pair in pairList:
     validList.append(compare(pair))
 
 print (validList)
+
+sum = 0
+
+for i, valid in enumerate(validList):
+    if valid:
+        sum += i+1
+
+print(sum)
