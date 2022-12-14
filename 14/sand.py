@@ -10,7 +10,28 @@ def printgrid(g) :
         print(line)
         
 
-f = open('test.txt', 'r')
+def dropSand(grid, xOff, point):
+    x = point[0]
+    y = point[1]
+    if y >= maxY:
+        return False
+    elif grid[y+1][x-xOff] == '.':
+        return dropSand(grid, xOff, (x, y+1))
+    elif x <= minX:
+        return False
+    elif grid[y+1][x-xOff-1] == '.':
+        return dropSand(grid, xOff, (x-1, y+1))
+    elif x >= maxX:
+        return False
+    elif grid[y+1][x-xOff+1] == '.':
+        return dropSand(grid, xOff, (x+1, y+1))
+    elif grid[y][x-xOff] != '+':
+        grid[y][x-xOff] = 'o'
+        return True
+    else:
+        return False        
+
+f = open('input.txt', 'r')
 
 lineList = f.read().splitlines()
 
@@ -39,7 +60,7 @@ for row in grid:
     row.extend(['.' for _ in range(minX, maxX+1)])
 
 grid[0][500-minX] = '+'
-printgrid(grid)
+#printgrid(grid)
 
 for path in rockList:
     start = path[0]
@@ -47,11 +68,24 @@ for path in rockList:
         #abs magic to do inclusive for both negative and positive differences
         dX = point[0] - start[0]
         dY = point[1] - start[1]
-        stepX = dX//abs(dX) if dX !=0 else 1
-        stepY = dY//abs(dY) if dY !=0 else 1
+        stepX = -1 if dX<0 else 1
+        stepY = -1 if dY<0 else 1
         for x in range(start[0], point[0] + stepX, stepX):
             for y in range(start[1], point[1] + stepY, stepY):
                 grid[y][x-minX] = '#'
         start = point
 
-printgrid(grid)
+#printgrid(grid)
+
+source = (500, 0)
+settled = 0
+canSettle = True
+
+while(canSettle):
+    canSettle = dropSand(grid, minX, source)
+    if canSettle:
+        settled += 1
+        #printgrid(grid)
+
+#printgrid(grid)
+print(settled)
