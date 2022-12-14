@@ -33,10 +33,25 @@ for path in rockList:
         maxY = max(maxY, point[1])
         minX = min(minX, point[0])
 
-grid = [[] for _ in range(minY, maxY)]
+grid = [[] for _ in range(minY, maxY+1)]
 
 for row in grid:
-    row.extend(['.' for _ in range(minX, maxX)])
+    row.extend(['.' for _ in range(minX, maxX+1)])
 
+grid[0][500-minX] = '+'
 printgrid(grid)
 
+for path in rockList:
+    start = path[0]
+    for point in path:
+        #abs magic to do inclusive for both negative and positive differences
+        dX = point[0] - start[0]
+        dY = point[1] - start[1]
+        stepX = dX//abs(dX) if dX !=0 else 1
+        stepY = dY//abs(dY) if dY !=0 else 1
+        for x in range(start[0], point[0] + stepX, stepX):
+            for y in range(start[1], point[1] + stepY, stepY):
+                grid[y][x-minX] = '#'
+        start = point
+
+printgrid(grid)
