@@ -10,23 +10,23 @@ def printgrid(g) :
         print(line)
         
 
-def dropSand(grid, xOff, point):
+def dropSand(grid, min, max, point):
     x = point[0]
     y = point[1]
     if y >= max:
         return False
-    elif grid[y+1][x-xOff] == '.':
-        return dropSand(grid, xOff, (x, y+1))
+    elif grid[y+1][x-min] == '.':
+        return dropSand(grid, min, max, (x, y+1))
     elif x <= min:
         return False
-    elif grid[y+1][x-xOff-1] == '.':
-        return dropSand(grid, xOff, (x-1, y+1))
+    elif grid[y+1][x-min-1] == '.':
+        return dropSand(grid, min, max, (x-1, y+1))
     elif x >= max:
         return False
-    elif grid[y+1][x-xOff+1] == '.':
-        return dropSand(grid, xOff, (x+1, y+1))
-    elif grid[y][x-xOff] in ['.', '+']:
-        grid[y][x-xOff] = 'o'
+    elif grid[y+1][x-min+1] == '.':
+        return dropSand(grid, min, max, (x+1, y+1))
+    elif grid[y][x-min] in ['.', '+']:
+        grid[y][x-min] = 'o'
         return True
     else:
         return False        
@@ -90,7 +90,7 @@ canSettle = True
 
 while(canSettle):
 
-    canSettle = dropSand(grid, min, source)
+    canSettle = dropSand(grid, min, max, source)
     if canSettle:
         settled += 1
         if settled %1000 == 0:
