@@ -1,102 +1,100 @@
 def printLines(list):
     [print(line) for line in list]
 
-def printgrid(g) :
+def printgrid(g):
     print("\n--------------------\n")
-    for row in g :
-        line = ''
+    for row in g:
+        line = ""
         for e in row:
-            line += ' ' + str(e) + ' '
+            line += " " + str(e) + " "
         print(line)
-        
 
+""" try to drop a grain of sand one tile
+ omit in-bounds checks as we made the grid oversized
+ return true if there is space for the sand to settle.
+ otherwise return false"""
 def dropSand(grid, min, max, point):
     x = point[0]
     y = point[1]
-    if y >= max:
-        return False
-    elif grid[y+1][x-min] == '.':
-        return dropSand(grid, min, max, (x, y+1))
-    elif x <= min:
-        return False
-    elif grid[y+1][x-min-1] == '.':
-        return dropSand(grid, min, max, (x-1, y+1))
-    elif x >= max:
-        return False
-    elif grid[y+1][x-min+1] == '.':
-        return dropSand(grid, min, max, (x+1, y+1))
-    elif grid[y][x-min] in ['.', '+']:
-        grid[y][x-min] = 'o'
+    if grid[y + 1][x - min] == ".":
+        return dropSand(grid, min, max, (x, y + 1))
+    elif grid[y + 1][x - min - 1] == ".":
+        return dropSand(grid, min, max, (x - 1, y + 1))
+    elif grid[y + 1][x - min + 1] == ".":
+        return dropSand(grid, min, max, (x + 1, y + 1))
+    elif grid[y][x - min] in [".", "+"]:
+        grid[y][x - min] = "o"
         return True
     else:
-        return False        
+        return False
 
-f = open('input.txt', 'r')
-
+# read data
+f = open("input.txt", "r")
 lineList = f.read().splitlines()
-
-rockList = [line.split(' -> ') for line in lineList]
-
-#printLines(rockList)
-
+rockList = [line.split(" -> ") for line in lineList]
 for path in rockList:
     for i, point in enumerate(path):
-        path[i] = eval('(' + point + ')')
+        path[i] = eval("(" + point + ")")
 
+# figure out how big the grid needs to be
 minX = 500
 minY = 0
 maxX = 0
 maxY = 0
 
 for path in rockList:
-    for i, point in enumerate(path):  
+    for i, point in enumerate(path):
         maxX = max(maxX, point[0])
         maxY = max(maxY, point[1])
         minX = min(minX, point[0])
 
-floorY =  maxY + 2
+floorY = maxY + 2
 maxY = floorY
 
-grid = [[] for _ in range(minY, maxY+1)]
+# create grid rows(y)
+grid = [[] for _ in range(minY, maxY + 1)]
 
-min = 500 - floorY
-max = 500 + floorY
+# make the grid at least wide enough for a pyramid going one out each row,
+# with some room to spare
+minX = 500 - floorY - 100
+maxX = 500 + floorY + 100
 
+# create empty grid
 for row in grid:
-    row.extend(['.' for _ in range(min, max+1)])
+    row.extend(["." for _ in range(minX, maxX + 1)])
 
-grid[0][500-min] = '+'
-grid[maxY] = ['#']*(len(grid[0]))
-#printgrid(grid)
+# add the source
+grid[0][500 - minX] = "+"
+# add the floor
+grid[maxY] = ["#"] * (len(grid[0]))
 
+# add rock paths
 for path in rockList:
     start = path[0]
     for point in path:
-        #abs magic to do inclusive for both negative and positive differences
+        # get path direction for each axis
         dX = point[0] - start[0]
         dY = point[1] - start[1]
-        stepX = -1 if dX<0 else 1
-        stepY = -1 if dY<0 else 1
+        stepX = -1 if dX < 0 else 1
+        stepY = -1 if dY < 0 else 1
         for x in range(start[0], point[0] + stepX, stepX):
             for y in range(start[1], point[1] + stepY, stepY):
-                grid[y][x-min] = '#'
+                # offset the x by the x origin of the grid
+                grid[y][x - minX] = "#"
         start = point
 
-#printgrid(grid)
 
+print("...")
+# try to settle the sand from source, count how many grains can settle
 source = (500, 0)
 settled = 0
 canSettle = True
-
-while(canSettle):
-
-    canSettle = dropSand(grid, min, max, source)
+while canSettle:
+    canSettle = dropSand(grid, minX, maxX, source)
     if canSettle:
         settled += 1
-        if settled %1000 == 0:
-            print (settled)
-        #printgrid(grid)
+        # printgrid(grid)
 
 
-#printgrid(grid)
+# printgrid(grid)
 print(settled)
