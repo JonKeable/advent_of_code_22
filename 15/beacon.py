@@ -67,7 +67,12 @@ printgrid(grid)
 for c in coordList:
     s = c['S']
     d = c['D']
-    for x in range(s[0]-d, s[0]+d+1):
-        if grid[s[1]-minY][x-minX] == '.':
-            grid[s[1]-minY][x-minX] = '#'
+
+    for y in range(s[1]-d, s[1]+d+1):
+        xLow = s[0]-d
+        xHigh = s[0]+d+1 
+        mod= abs(s[1]-y)
+        for x in range(xLow+mod, xHigh-mod):
+            if grid[y-minY][x-minX] == '.':
+                grid[y-minY][x-minX] = '#'
     printgrid(grid)
