@@ -35,25 +35,6 @@ for coords in coordList:
 
 #print(coordList)
 
-minX = coordList[0]['S'][0]
-minY = coordList[0]['S'][1]
-maxX = minX
-maxY = minY
-
-
-for c in coordList:
-    s = c['S']
-    d = c['D']
-    minX = min(s[0]-d, minX)
-    minY = min(s[1]-d, minY)
-    maxX = max(s[0]+d, maxX)
-    maxY = max(s[1]+d, maxY)
-
-minY -= 1
-maxY += 2
-minX -= 1
-maxX += 2
-
 targetRow = 2000000
 scanned = set()
 
