@@ -38,6 +38,7 @@ minY = coordList[0]['S'][1]
 maxX = minX
 maxY = minY
 
+
 for c in coordList:
     s = c['S']
     d = c['D']
@@ -51,14 +52,22 @@ maxY += 2
 minX -= 1
 maxX += 2
 
+#empty grid
 grid = [['.' for _ in range(minX, maxX)] for _ in range(minY,maxY)]
 
-
+#init signal and beacon positions
 for c in coordList:
     s = c['S']
     b = c['B']
     grid[s[1]-minY][s[0]-minX] = 'S'
     grid[b[1]-minY][b[0]-minX] = 'B'
 
-    
 printgrid(grid)
+
+for c in coordList:
+    s = c['S']
+    d = c['D']
+    for x in range(s[0]-d, s[0]+d+1):
+        if grid[s[1]-minY][x-minX] == '.':
+            grid[s[1]-minY][x-minX] = '#'
+    printgrid(grid)
