@@ -22,7 +22,7 @@ def printgrid(g) :
             line += ' ' + str(e) + ' '
         print(line)
 
-f = open('test.txt', 'r')
+f = open('input.txt', 'r')
 
 lineList = f.read().splitlines()
 
@@ -44,11 +44,12 @@ print(coordList)
 
 #targetRow = 2000000
 min = 0
-max = 20
+max = 4000000
 scanned = set()
 all = {(x,y) for x in range(min, max+1) for y in range(min, max)}
 
 for c in coordList:
+    print(f'signal @ {s}')
     s = c['S']
     d = c['D']
 
@@ -59,8 +60,9 @@ for c in coordList:
         for x in range(xLow+mod, xHigh-mod):
             scanned.add((x,y))
 
-print(scanned)
-print(len(scanned))
-print(all - scanned)
+#print(scanned)
+#print(len(scanned))
+pos = (all - scanned).pop()
 
-
+freq = pos[0] * 4000000 + pos[1]
+print(f'{pos} @freq {freq}')
