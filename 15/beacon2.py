@@ -1,4 +1,8 @@
 import re
+from bitarray import bitarray
+from threading import Thread
+
+
 
 def splitCoords(coList):
     return {'S' : coList[:2], 'B': coList[2:]}
@@ -22,7 +26,27 @@ def printgrid(g) :
             line += ' ' + str(e) + ' '
         print(line)
 
-f = open('test.txt', 'r')
+def computeSignal(c):
+    s = c['S']
+    d = c['D']
+    xLow = s[0]-d
+    xHigh = s[0]+d+1 
+
+    for y in range(s[1]-d, s[1]+d+1):
+        mod= abs(s[1]-y)
+        if y >= min and y <=max and xLow+mod >= min and xHigh+mod <=max:
+
+            #for x in range(xLow+mod, xHigh-mod):
+            #    scanned.add((x,y))
+            # scanned = scanned | set([(x,y) for x in range(xLow+mod,xHigh-mod)])
+            
+            scanned.add((xLow+mod, y))
+            scanned.add((xHigh-mod, y))
+
+
+
+
+f = open('input.txt', 'r')
 
 lineList = f.read().splitlines()
 
@@ -31,7 +55,7 @@ pattern = '-*\d+'
 
 coordList = [splitCoords(listToInt(re.findall(pattern, line))) for line in lineList]
 
-print(coordList)
+#print(coordList)
 
 for coords in coordList:
     s = coords['S']
@@ -39,32 +63,30 @@ for coords in coordList:
     d = abs(s[0] -b[0]) + abs(s[1] - b[1])
     coords['D'] = d
 
-print(coordList)
+#print(coordList)
 
 
 #targetRow = 2000000
 min = 0
-max = 20 # 4000000
+max = 4000000
 scanned = set()
-all = {(x,y) for x in range(min, max+1) for y in range(min, max)}
+#all = {(x,y) for x in range(min, max+1) for y in range(min, max)}
+
+validRows = {}
+
+threads = []
 
 for c in coordList:
-    print(f'signal @ {s}')
     s = c['S']
-    d = c['D']
-    xLow = s[0]-d
-    xHigh = s[0]+d+1 
+    print(f'signal @ {s}')
+    t= Thread(target=computeSignal, args=(c,))
+    threads.append(t)
+    t.start()
 
-    for y in range(s[1]-d, s[1]+d+1):
+for t in threads:
+    t.join()
 
-        mod= abs(s[1]-y)
-        #for x in range(xLow+mod, xHigh-mod):
-        #    scanned.add((x,y))
-        scanned = scanned | set([(x,y) for x in range(xLow+mod,xHigh-mod)])
 
-#print(scanned)
-#print(len(scanned))
-pos = (all - scanned).pop()
+print(len(scanned))
 
-freq = pos[0] * 4000000 + pos[1]
-print(f'{pos} @freq {freq}')
+
