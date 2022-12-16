@@ -8,16 +8,8 @@ def listToInt(l):
 
 def printgrid(g) :
     print("\n--------------------\n")
-    fl = '   '
-    for i in range(minX, maxX):
-        if i > -1 and i < 10:
-            fl +=  ' ' + str(i) + ' '
-        else :
-            fl += str(i) + ' ' 
-    print(fl)
-    for index, row in enumerate(g) :
-        
-        line = f'{index + minY:>3}'
+    for row in g :
+        line = ''
         for e in row:
             line += ' ' + str(e) + ' '
         print(line)
@@ -27,7 +19,7 @@ f = open('test.txt', 'r')
 lineList = f.read().splitlines()
 
 # regex to get the coords only from each line
-pattern = '-*\d+'
+pattern = '\d+'
 
 coordList = [splitCoords(listToInt(re.findall(pattern, line))) for line in lineList]
 
@@ -60,12 +52,6 @@ maxY += 2
 minX -= 1
 maxX += 2
 
-#targetRow = 2000000
-min = 0
-max = 20
-scanned = set()
-all = {(x,y) for x in range(min, max+1) for y in range(min, max)}
-
 #empty grid
 grid = [['.' for _ in range(minX, maxX)] for _ in range(minY,maxY)]
 
@@ -87,14 +73,8 @@ for c in coordList:
         xHigh = s[0]+d+1 
         mod= abs(s[1]-y)
         for x in range(xLow+mod, xHigh-mod):
-            scanned.add((x,y))
             if grid[y-minY][x-minX] == '.':
                 grid[y-minY][x-minX] = '#'
     printgrid(grid)
 
 printgrid(grid)
-print(scanned)
-print(len(scanned))
-print(all - scanned)
-
-
