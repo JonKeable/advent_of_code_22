@@ -41,42 +41,12 @@ for coords in coordList:
 
 print(coordList)
 
-minX = coordList[0]['S'][0]
-minY = coordList[0]['S'][1]
-maxX = minX
-maxY = minY
-
-
-for c in coordList:
-    s = c['S']
-    d = c['D']
-    minX = min(s[0]-d, minX)
-    minY = min(s[1]-d, minY)
-    maxX = max(s[0]+d, maxX)
-    maxY = max(s[1]+d, maxY)
-
-minY -= 1
-maxY += 2
-minX -= 1
-maxX += 2
 
 #targetRow = 2000000
 min = 0
 max = 20
 scanned = set()
 all = {(x,y) for x in range(min, max+1) for y in range(min, max)}
-
-#empty grid
-grid = [['.' for _ in range(minX, maxX)] for _ in range(minY,maxY)]
-
-#init signal and beacon positions
-for c in coordList:
-    s = c['S']
-    b = c['B']
-    grid[s[1]-minY][s[0]-minX] = 'S'
-    grid[b[1]-minY][b[0]-minX] = 'B'
-
-printgrid(grid)
 
 for c in coordList:
     s = c['S']
@@ -88,11 +58,7 @@ for c in coordList:
         mod= abs(s[1]-y)
         for x in range(xLow+mod, xHigh-mod):
             scanned.add((x,y))
-            if grid[y-minY][x-minX] == '.':
-                grid[y-minY][x-minX] = '#'
-    printgrid(grid)
 
-printgrid(grid)
 print(scanned)
 print(len(scanned))
 print(all - scanned)
